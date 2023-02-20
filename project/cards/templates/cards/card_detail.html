@@ -1,0 +1,68 @@
+{% extends 'cards/base.html'%}
+
+{% block title %}
+{{ card }}
+{% endblock %}
+
+{% block content %}
+    <div class="py-6 px-6">
+        <h1 class="mb-4 text-xl">{{ card }}</h1>
+
+        <p class="mt-2 font-semibold">Create Date</p>
+        <p>{{ card.create_date|date:"d.m.Y H:i" }}</p>
+
+        <p class="mt-2 font-semibold">Start Activate Date</p>
+        <p>{{ card.start_activate_date|date:"d.m.Y H:i" }}</p>
+
+        <p class="mt-2 font-semibold">Date of last use</p>
+        <p>{{ card.date_of_last_use|date:"d.m.Y H:i" }}</p>
+
+        <p class="mt-2 font-semibold">Finish Date</p>
+        <p>{{ card.finish_date|date:"d.m.Y H:i" }}</p>
+
+        <p class="mt-2 font-semibold">Orders Amount</p>
+        <p>{{ card.orders_amount }} руб</p>
+
+        <p class="mt-2 font-semibold">Card Status</p>
+        <p>{{ card.get_card_status_display }}</p>
+
+        <p class="mt-2 font-semibold">Discount</p>
+        <p class="mb-6">{{ card.discount }} %</p>
+
+        <hr class="my-4">
+
+        <a class="py-3 px-8 bg-teal-500 text-white rounded-xl" href="{% url 'card_edit' card.id %}">Edit</a>
+        <a class="py-3 px-8 bg-red-500 text-white rounded-xl" href="{% url 'card_delete_in_trash' card.id %}">Delete in trash bin</a>
+
+        <hr class="my-4">
+
+        <a class="py-3 px-8 bg-teal-500 text-white rounded-xl" href="{% url 'index' %}">Back to Cards</a>
+    </div>
+
+    <div class="mb-4 py-6 px-6">
+        <h1 class="text-xl">Card orders</h1>
+
+        {% if orders %}
+            <div class="mt-6 flex justify-between">
+                <p class="py-4 px-2 bg-gray-200 font-semibold w-full">date_of_purchase</p>
+                <p class="py-4 px-2 bg-gray-200 font-semibold w-full">total_amount</p>
+                <p class="py-4 px-2 bg-gray-200 font-semibold w-full">discount</p>
+                <p class="py-4 px-2 bg-gray-200 font-semibold w-full">total_amount_with_discount</p>
+                <p class="py-4 px-2 bg-gray-200 font-semibold w-full">discount_value</p>
+            </div>
+            {% for order in orders %}
+                <div class="flex justify-between">
+                    <p class="py-2 px-2 w-full">{{ order.date_of_purchase|date:"d.m.Y H:i" }}</p>
+                    <p class="py-2 px-2 w-full">
+                        <a href="{% url 'card_detail' card.id %}"> {{ order.total_amount }} руб</a>
+                    </p>
+                    <p class="py-2 px-2 w-full">{{ order.discount }} %</p>
+                    <p class="py-2 px-2 w-full">{{ order.total_amount_with_discount }} руб</p>
+                    <p class="py-2 px-2 w-full">{{ order.discount_value }} руб</p>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p class="mt-6 px-2">There are no orders in the database yet...</p>
+        {% endif %}
+    </div>
+{% endblock %}

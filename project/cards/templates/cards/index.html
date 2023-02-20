@@ -1,0 +1,61 @@
+{% extends 'cards/base.html'%}
+
+{% block title %}
+Sellwin Cards
+{% endblock %}
+
+{% block content %}
+    <div class="mb-4 py-6 px-6">
+        <h1 class="text-xl">Sellwin Cards</h1>
+
+        {% if cards %}
+            <div class="mt-6 flex justify-between">
+                <p class="py-4 px-2 bg-gray-200 font-semibold w-full">card seria</p>
+                <p class="py-4 px-2 bg-gray-200 font-semibold w-full">card number</p>
+                <p class="py-4 px-2 bg-gray-200 font-semibold w-full">create date</p>
+                <p class="py-4 px-2 bg-gray-200 font-semibold w-full">finish date</p>
+                <p class="py-4 px-2 bg-gray-200 font-semibold w-full">card status</p>
+            </div>
+            <div class="mt-4 flex justify-between">
+                <form class="form-inline py-4 px-2 bg-yellow-200 font-semibold w-full" action="{% url 'index' %}">
+                    <input class="form-control py-1 px-2" type="search" placeholder="Search" aria-label="Search" name="query">
+                    <input type="hidden" name="search_by" value="serial">
+                    <button class="btn btn-success py-1 px-8 bg-teal-500 text-white rounded-xl" type="submit">Search</button>
+                </form>
+               <form class="form-inline py-4 px-2 bg-yellow-200 font-semibold w-full">
+                    <input class="form-control py-1 px-2" type="search" placeholder="Search" aria-label="Search" name="query">
+                    <input type="hidden" name="search_by" value="number">
+                    <button class="btn btn-success py-1 px-8 bg-teal-500 text-white rounded-xl" type="submit">Search</button>
+                </form>
+               <form class="form-inline py-4 px-2 bg-yellow-200 font-semibold w-full">
+                    <input class="form-control py-1 px-2" type="search" placeholder="Search" aria-label="Search" name="query">
+                    <input type="hidden" name="search_by" value="create_date">
+                    <button class="btn btn-success py-1 px-8 bg-teal-500 text-white rounded-xl" type="submit">Search</button>
+                </form>
+               <form class="form-inline py-4 px-2 bg-yellow-200 font-semibold w-full">
+                    <input class="form-control py-1 px-2" type="search" placeholder="Search" aria-label="Search" name="query">
+                    <input type="hidden" name="search_by" value="finish_date">
+                    <button class="btn btn-success py-1 px-8 bg-teal-500 text-white rounded-xl" type="submit">Search</button>
+                </form>
+                <form class="form-inline py-4 px-2 bg-yellow-200 font-semibold w-full">
+                    <input class="form-control py-1 px-2" type="search" placeholder="Search" aria-label="Search" name="query">
+                    <input type="hidden" name="search_by" value="card_status">
+                    <button class="btn btn-success py-1 px-8 bg-teal-500 text-white rounded-xl" type="submit">Search</button>
+                </form>
+            </div>
+            {% for card in cards %}
+                <div class="flex justify-between">
+                    <p class="py-2 px-2 w-full">{{ card.serial }}</p>
+                    <p class="py-2 px-2 w-full">
+                        <a href="{% url 'card_detail' card.id %}"> {{ card.number }} </a>
+                    </p>
+                    <p class="py-2 px-2 w-full">{{ card.create_date|date:"d.m.Y H:i" }}</p>
+                    <p class="py-2 px-2 w-full">{{ card.finish_date|date:"d.m.Y H:i" }}</p>
+                    <p class="py-2 px-2 w-full">{{ card.get_card_status_display }}</p>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p class="mt-6 px-2">There are no cards in the database yet...</p>
+        {% endif %}
+    </div>
+{% endblock %}

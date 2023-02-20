@@ -1,0 +1,48 @@
+{% extends 'cards/base.html'%}
+
+{% block title %}
+Trash bin
+{% endblock %}
+
+{% block content %}
+    <div class="mb-4 py-6 px-6">
+        <h1 class="text-xl">Trash bin</h1>
+
+        {% if cards %}
+            <div class="mt-6 flex justify-between">
+                <p class="py-4 px-2 bg-gray-200 font-semibold w-full">card seria</p>
+                <p class="py-4 px-2 bg-gray-200 font-semibold w-full">card number</p>
+                <p class="py-4 px-2 bg-gray-200 font-semibold w-full"></p>
+                <p class="py-4 px-2 bg-gray-200 font-semibold w-full"></p>
+            </div>
+            <div class="mt-4 flex justify-between">
+                <form class="form-inline py-4 px-2 bg-yellow-200 font-semibold w-full" action="{% url 'index' %}">
+                    <input class="form-control py-1 px-2" type="search" placeholder="Search" aria-label="Search" name="query">
+                    <input type="hidden" name="search_by" value="serial">
+                    <button class="btn btn-success py-1 px-8 bg-teal-500 text-white rounded-xl" type="submit">Search</button>
+                </form>
+               <form class="form-inline py-4 px-2 bg-yellow-200 font-semibold w-full">
+                    <input class="form-control py-1 px-2" type="search" placeholder="Search" aria-label="Search" name="query">
+                    <input type="hidden" name="search_by" value="number">
+                    <button class="btn btn-success py-1 px-8 bg-teal-500 text-white rounded-xl" type="submit">Search</button>
+                </form>
+                <p class="py-4 px-2 bg-yellow-200 font-semibold w-full"></p>
+                <p class="py-4 px-2 bg-yellow-200 font-semibold w-full"></p>
+            </div>
+            {% for card in cards %}
+                <div class="mt-4 flex justify-between">
+                    <p class="py-2 px-2 w-full">{{ card.serial }}</p>
+                    <p class="py-2 px-2 w-full"> {{ card.number }} </p>
+                    <p class="py-2 px-2 w-full">
+                        <a class="ml-8 py-2 px-4 bg-teal-500 text-white rounded-xl" href="{% url 'recover' card.id %}">Recover</a>
+                    </p>
+                    <p class="py-2 px-2 w-full">
+                        <a class="ml-8 py-2 px-4 bg-red-500 text-white rounded-xl" href="{% url 'card_delete' card.id %}">Delete</a>
+                    </p>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p class="mt-6 px-2">There are no cards in the database yet...</p>
+        {% endif %}
+    </div>
+{% endblock %}
